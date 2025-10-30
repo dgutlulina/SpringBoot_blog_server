@@ -17,4 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
 
+    @Override
+    public Comment addComment(Comment comment) {
+        this.save(comment);
+        return comment;
+    }
 }
