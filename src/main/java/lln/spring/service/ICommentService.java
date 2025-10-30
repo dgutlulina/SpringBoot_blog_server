@@ -2,6 +2,8 @@ package lln.spring.service;
 
 import lln.spring.entity.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
+import lln.spring.tools.PageParams;
+import lln.spring.tools.Result;
 
 /**
  * <p>
@@ -12,11 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-10-20
  */
 public interface ICommentService extends IService<Comment> {
-    
-    /**
-     * 添加评论
-     * @param comment 评论对象
-     * @return 添加后的评论对象
-     */
-    Comment addComment(Comment comment);
+
+    public Result getAPageCommentByArticleId(Integer articleId, PageParams pageParams);
+
+    public Comment insert(Comment comment);
+
 }

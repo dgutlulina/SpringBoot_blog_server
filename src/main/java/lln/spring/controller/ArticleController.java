@@ -3,6 +3,7 @@ package lln.spring.controller;
 
 import lln.spring.entity.Article;
 import lln.spring.service.ArticleService;
+import lln.spring.tools.PageParams;
 import lln.spring.tools.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,15 +27,30 @@ public String getHello() {
 
 @Autowired
     private ArticleService articleService;
-@PostMapping("/publishArticle")
-    public String publishArticle(@RequestBody Article article) {
-    try {
-        articleService.publish(article);
-        return "添加成功";
-    }catch (Exception e){
-        e.printStackTrace();
+
+    @PostMapping("/getAPageOfArticleVO")
+    public Result getAPageOfArticleVO(@RequestBody PageParams pageParams) {
+        Result result = new Result();
+        try {
+            result = articleService.getAPageOfArticleVO(pageParams);
+        } catch (Exception e) {
+            result.setErrorMessage("查询文章失败！");
+            e.printStackTrace();
+        }
+        return result;
     }
-       return "添加失败";
+    @RequestMapping("/publishArticle")
+    public String publishArticle(String type, @RequestBody Article article){
+        try{
+            if("add".equals(type))
+                articleService.publish(article);
+            else if("edit".equals(type))
+                articleService.update(article);
+            return "添加成功！";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "添加失败！";
     }
 //上传图片
 
@@ -63,5 +79,44 @@ public Result upload(MultipartFile file) {
         }
         return result;
     }
+
+    @PostMapping("/getArticleAndFirstPageCommentByArticleId")
+    public Result getArticleAndFirstPageCommentByArticleId(Integer articleId,@RequestBody PageParams pageParams) {
+        Result result = new Result();
+        try {
+            result = articleService.getArticleAndFirstPageCommentByArticleId(articleId, pageParams);
+        } catch (Exception e) {
+            result.setErrorMessage("查询文章失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping("/selectById")
+    public Result selectById(Integer id){
+        Result result=new Result();
+        try{
+            Article article=articleService.selectById(id);
+            result.getMap().put("article",article);
+        }catch (Exception e){
+            result.setErrorMessage("查询失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+//    根据ID删除
+    @PostMapping("/deleteById")
+    public Result deleteById(Integer id){
+        Result result=new Result();
+        try{
+            articleService.deleteById(id);
+        }catch (Exception e){
+            result.setErrorMessage("删除失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
 }

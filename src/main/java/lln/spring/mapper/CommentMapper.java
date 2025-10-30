@@ -3,6 +3,7 @@ package lln.spring.mapper;
 import lln.spring.entity.Comment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -19,4 +20,11 @@ import java.util.List;
 public interface CommentMapper extends BaseMapper<Comment> {
     @Select("SELECT * FROM t_comment WHERE article_id=#{articleId} ORDER BY id DESC")
     public List<Comment> selectByArticleId(Integer articleId);
+
+    @Select("SELECT * FROM t_comment WHERE article_id=#{articleId} ORDER BY id DESC limit #{offset},#{size}")
+    public List<Comment> getAPageCommentByArticleId(
+            @Param("articleId") Integer articleId,
+            @Param("offset") Integer offset,
+            @Param("size") Integer size
+    );
 }
