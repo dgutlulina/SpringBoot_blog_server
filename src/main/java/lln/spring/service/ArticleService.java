@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lln.spring.entity.Article;
 import lln.spring.entity.vo.ArticleVO;
+import lln.spring.tools.ArticleSearch;
 import lln.spring.tools.PageParams;
 import lln.spring.tools.Result;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,5 +36,7 @@ public Article selectById(Integer id);
     public Result getAPageOfArticle(PageParams pageParams);
 
     public Result getIndexData(PageParams pageParams);
+
+    public Result articleSearch(ArticleSearch articleSearch);
 
 }

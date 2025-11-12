@@ -3,6 +3,7 @@ package lln.spring.controller;
 
 import lln.spring.entity.Article;
 import lln.spring.service.ArticleService;
+import lln.spring.tools.ArticleSearch;
 import lln.spring.tools.PageParams;
 import lln.spring.tools.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,6 +149,18 @@ public Result upload(MultipartFile file) {
             result=articleService.getAPageOfArticle(pageParams);
         }catch (Exception e){
             result.setErrorMessage("查询文章失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @PostMapping("/articleSearch")
+    public Result articleSearch(@RequestBody ArticleSearch articleSearch) {
+        Result result = new Result();
+        try {
+            result = articleService.articleSearch(articleSearch);
+        } catch (Exception e) {
+            result.setErrorMessage("获取数据失败！");
             e.printStackTrace();
         }
         return result;

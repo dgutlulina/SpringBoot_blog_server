@@ -10,6 +10,7 @@ import lln.spring.entity.Article;
 import lln.spring.mapper.CommentMapper;
 import lln.spring.mapper.StatisticMapper;
 import lln.spring.service.ArticleService;
+import lln.spring.tools.ArticleSearch;
 import lln.spring.tools.PageParams;
 import lln.spring.tools.Result;
 import lombok.SneakyThrows;
@@ -172,6 +173,27 @@ public void deleteById(Integer id){
         pageParams1.setRows(10L);
         Result result1 = getAPageOfArticleVO(pageParams1, "hits");
         result.getMap().put("articleVOs", result1.getMap().get("articleVOs"));
+        return result;
+    }
+
+    public Result articleSearch(ArticleSearch articleSearch){
+        QueryWrapper<ArticleVO> wrapper = new QueryWrapper<>();
+        wrapper.orderBy(true, false, "id");
+
+        wrapper.like(articleSearch.getArticleCondition().getTitle()!="", "title",
+                articleSearch.getArticleCondition().getTitle());
+        wrapper.ge(articleSearch.getArticleCondition().getStartDate()!=null, "created",
+                articleSearch.getArticleCondition().getStartDate());
+        wrapper.le(articleSearch.getArticleCondition().getEndDate()!=null, "created",
+                articleSearch.getArticleCondition().getEndDate());
+
+        Page<ArticleVO> page = new Page<>(articleSearch.getPageParams().getPage(),
+                articleSearch.getPageParams().getRows());
+        IPage<ArticleVO> aPage = articleMapper.articleSearch(page, wrapper);
+        Result result=new Result();
+        articleSearch.getPageParams().setTotal(aPage.getTotal());
+        result.getMap().put("articleVOs",aPage.getRecords());
+        result.getMap().put("pageParams",articleSearch.getPageParams());
         return result;
     }
 
