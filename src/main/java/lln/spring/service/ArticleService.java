@@ -30,5 +30,7 @@ public Article selectById(Integer id);
 
     public void deleteById(Integer id);
 
+    public Result getIndexData();
+
 
 }

@@ -11,10 +11,15 @@ import org.apache.ibatis.annotations.Select;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 
+import java.util.List;
+
 
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
     @Select("SELECT t_article.id,title,t_article.created,categories,t_statistic.hits FROM t_article , t_statistic ${ew.customSqlSegment}")
     IPage<ArticleVO> getAPageOfArticleVO(IPage<ArticleVO> page, @Param("ew") Wrapper wrapper);
+
+    public List<Article> getPage(@Param("offset")Integer offset, @Param("size")Integer size);
+
 
 }

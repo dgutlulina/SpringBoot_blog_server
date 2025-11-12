@@ -22,6 +22,7 @@ import java.io.File;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service // 确保该注解存在，让Spring扫描为Bean
@@ -38,10 +39,18 @@ public class ArticleServiceImpl implements ArticleService {
 //        articleMapper.insert(article);
 //    }
 
+    public Result getIndexData(){
+        Result result = new Result();
+        List< Article> articles = articleMapper.getPage(0,5);
+        result.getMap().put("articles",articles);
+        return result;
+    }
+
+
     @SneakyThrows
     @Override
     public String upload(MultipartFile file){
-        final File folder = new File("D:/Springboot");
+        final File folder = new File("D:\\Springboot\\img\\images");
         if(!folder.exists()){
             folder.mkdirs();
         }

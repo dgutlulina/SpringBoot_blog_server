@@ -28,6 +28,18 @@ public String getHello() {
 @Autowired
     private ArticleService articleService;
 
+@PostMapping("/getIndexData")
+public Result getIndexData(){
+    Result result = new Result();
+    try{
+        result = articleService.getIndexData();
+    }catch (Exception e){
+        result.setErrorMessage("查询文章失败！");
+        e.printStackTrace();
+    }
+    return result;
+}
+
     @PostMapping("/getAPageOfArticleVO")
     public Result getAPageOfArticleVO(@RequestBody PageParams pageParams) {
         Result result = new Result();
