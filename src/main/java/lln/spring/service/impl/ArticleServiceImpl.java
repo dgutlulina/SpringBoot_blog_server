@@ -43,6 +43,13 @@ public class ArticleServiceImpl implements ArticleService {
         Result result = new Result();
         List< Article> articles = articleMapper.getPage(0,5);
         result.getMap().put("articles",articles);
+
+        PageParams pageParams = new PageParams();
+        pageParams.setPage(1L);
+        pageParams.setRows(10L);
+        Result result1 = getAPageOfArticleVO(pageParams,"hits");
+        result.getMap().put("articleVOs", result1.getMap().get("articleVOs"));
+
         return result;
     }
 
@@ -65,8 +72,14 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private StatisticMapper statisticMapper;
 
-    public Result getAPageOfArticleVO(PageParams pageParams) {
+    public Result getAPageOfArticleVO(PageParams pageParams,String type) {
         QueryWrapper<ArticleVO> queryWrapper = new QueryWrapper<>();
+
+        if("id".equals( type))
+            queryWrapper.orderBy(true, false, "t_article.id");
+        else
+            queryWrapper.orderBy(true, false, "t_statistic.hits");
+
         queryWrapper.orderBy(true, false, "t_article.id");
         queryWrapper.apply("t_article.id = t_statistic.article_id");
         String s = queryWrapper.getCustomSqlSegment();

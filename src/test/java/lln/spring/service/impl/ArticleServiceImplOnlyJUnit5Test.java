@@ -34,7 +34,7 @@ class ArticleServiceImplOnlyJunit5Test {
         PageParams pageParams=new PageParams();
         pageParams.setPage(1L);
         pageParams.setRows(2L);
-        Result result=articleService.getAPageOfArticleVO(pageParams);
+        Result result=articleService.getAPageOfArticleVO(pageParams,"hits");
 
         List<ArticleVO> records=(List<ArticleVO>)result.getMap().get("articleVOs");
         assertEquals(12,records.get(0).getId());

@@ -44,7 +44,7 @@ public Result getIndexData(){
     public Result getAPageOfArticleVO(@RequestBody PageParams pageParams) {
         Result result = new Result();
         try {
-            result = articleService.getAPageOfArticleVO(pageParams);
+            result = articleService.getAPageOfArticleVO(pageParams,"id");
         } catch (Exception e) {
             result.setErrorMessage("查询文章失败！");
             e.printStackTrace();

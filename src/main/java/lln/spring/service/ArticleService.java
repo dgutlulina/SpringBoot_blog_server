@@ -21,7 +21,7 @@ public interface ArticleService {
     //获取文章和评论
     public Result getArticleAndCommentByArticleId (Integer articleId);
 
-    Result getAPageOfArticleVO(PageParams pageParams);
+    Result getAPageOfArticleVO(PageParams pageParams,String type);
 
     public void update(Article article);
 
