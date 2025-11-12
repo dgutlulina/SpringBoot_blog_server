@@ -129,6 +129,28 @@ public Result upload(MultipartFile file) {
         }
         return result;
     }
+    @PostMapping("/getIndexData1")
+    public Result getIndexData1(@RequestBody PageParams pageParams){
+        Result result=new Result();
+        try{
+            result=articleService.getIndexData(pageParams);
+        }catch (Exception e){
+            result.setErrorMessage("获取数据失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
 
+    @PostMapping("/getAPageOfArticle")
+    public Result getAPageOfArticle(@RequestBody PageParams pageParams){
+        Result result=new Result();
+        try{
+            result=articleService.getAPageOfArticle(pageParams);
+        }catch (Exception e){
+            result.setErrorMessage("查询文章失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 }

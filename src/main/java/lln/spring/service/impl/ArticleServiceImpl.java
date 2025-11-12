@@ -151,4 +151,28 @@ public void deleteById(Integer id){
     articleMapper.deleteById(id);
 }
 
+    public Result getAPageOfArticle(PageParams pageParams) {
+        QueryWrapper<ArticleVO> wrapper = new QueryWrapper<>();
+        wrapper.orderBy(true, false, "t_article.id");
+
+        Page<Article> page = new Page<>(pageParams.getPage(), pageParams.getRows());
+        IPage<Article> aPage = articleMapper.getAPageOfArticle(page, wrapper);
+        Result result = new Result();
+        pageParams.setTotal(aPage.getTotal());
+        result.getMap().put("articles", aPage.getRecords());
+        result.getMap().put("pageParams", pageParams);
+        return result;
+    }
+    public Result getIndexData(PageParams pageParams){
+        //查文章分页
+        Result result=getAPageOfArticle(pageParams);
+        //查点击量排名前十文章
+        PageParams pageParams1 = new PageParams();
+        pageParams1.setPage(1L);
+        pageParams1.setRows(10L);
+        Result result1 = getAPageOfArticleVO(pageParams1, "hits");
+        result.getMap().put("articleVOs", result1.getMap().get("articleVOs"));
+        return result;
+    }
+
 }

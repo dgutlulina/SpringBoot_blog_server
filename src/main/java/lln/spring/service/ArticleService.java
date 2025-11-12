@@ -32,5 +32,8 @@ public Article selectById(Integer id);
 
     public Result getIndexData();
 
+    public Result getAPageOfArticle(PageParams pageParams);
+
+    public Result getIndexData(PageParams pageParams);
 
 }

@@ -21,5 +21,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     public List<Article> getPage(@Param("offset")Integer offset, @Param("size")Integer size);
 
+    @Select("SELECT * FROM t_article ${ew.customSqlSegment}")
+    IPage<Article> getAPageOfArticle(IPage<Article> page, @Param("ew") Wrapper wrapper);
 
 }
