@@ -14,6 +14,8 @@ import lln.spring.tools.ArticleSearch;
 import lln.spring.tools.PageParams;
 import lln.spring.tools.Result;
 import lombok.SneakyThrows;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -160,6 +162,18 @@ public void deleteById(Integer id){
         IPage<Article> aPage = articleMapper.getAPageOfArticle(page, wrapper);
         Result result = new Result();
         pageParams.setTotal(aPage.getTotal());
+
+        //只返回部分文章内容
+        if(aPage.getRecords()!=null && aPage.getRecords().size()>0){
+            for(Article article:aPage.getRecords()){
+                Document doc = Jsoup.parse(article.getContent());
+                String content=doc.text();
+                if(content.length()>100)
+                    content=content.substring(0,99)+"......";
+                article.setContent(content);
+            }
+        }
+
         result.getMap().put("articles", aPage.getRecords());
         result.getMap().put("pageParams", pageParams);
         return result;

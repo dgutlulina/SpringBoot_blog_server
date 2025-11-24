@@ -55,6 +55,9 @@ public Result getIndexData(){
     @RequestMapping("/publishArticle")
     public String publishArticle(String type, @RequestBody Article article){
         try{
+            if(article.getThumbnail()==null || !article.getThumbnail().contains("/api")){
+                article.setThumbnail("/api/images/6.png");//设置默认的文章标题图片
+            }
             if("add".equals(type))
                 articleService.publish(article);
             else if("edit".equals(type))
