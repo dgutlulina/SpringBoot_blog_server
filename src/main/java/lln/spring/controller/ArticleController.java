@@ -1,4 +1,3 @@
-
 package lln.spring.controller;
 
 import lln.spring.entity.Article;
@@ -108,8 +107,8 @@ public Result upload(MultipartFile file) {
         return result;
     }
 
-    @RequestMapping("/selectById")
-    public Result selectById(Integer id){
+    @RequestMapping("/getArticleById")
+    public Result getArticleById(Integer id){
         Result result=new Result();
         try{
             Article article=articleService.selectById(id);

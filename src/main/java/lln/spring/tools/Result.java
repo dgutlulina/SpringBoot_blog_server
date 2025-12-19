@@ -29,5 +29,7 @@ public class Result {
 
 
     public void setErrorMessage(String s) {
+        this.success = false;
+        this.msg = s;
     }
 }

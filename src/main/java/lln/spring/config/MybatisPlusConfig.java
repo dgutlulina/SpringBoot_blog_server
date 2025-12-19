@@ -3,10 +3,12 @@ package lln.spring.config;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@MapperScan("lln.spring.mapper")
 public class MybatisPlusConfig {
     /**
      * 分页插件。如果你不配置，分页插件将不生效

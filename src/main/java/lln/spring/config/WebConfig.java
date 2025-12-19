@@ -1,4 +1,3 @@
-
 package lln.spring.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -8,6 +7,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -29,5 +29,15 @@ public class WebConfig implements WebMvcConfigurer {
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         converter.setObjectMapper(objectMapper);
         converters.add(0, converter);
+    }
+    
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 }
