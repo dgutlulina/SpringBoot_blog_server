@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据源名称
+    name: defaultDataSource
+    # 数据库连接地址
+    url: jdbc:mysql://localhost:3306/my_blog_system?serverTimezone=UTC
+    # 数据库用户名&密码:
+    username: root
+    password: root
+
+#数据库连接池配置
+type: com.alibaba.druid.pool.DruidDataSource
+initialSize: 20 #初始连接数量
+minIdle: 10 #最小空闲连接数量
+maxActive: 100 #最大活动连接数量

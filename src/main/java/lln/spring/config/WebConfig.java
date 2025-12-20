@@ -2,6 +2,7 @@ package lln.spring.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -14,10 +15,12 @@ import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    @Value("${uploadImagesDir}")
+    private String uploadImagesDir;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/api/images/**")
-                .addResourceLocations("file:D:\\Springboot\\img\\images\\");
+                .addResourceLocations("file:"+uploadImagesDir);
     }
 
     @Override

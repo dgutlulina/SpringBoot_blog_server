@@ -17,6 +17,7 @@ import lombok.SneakyThrows;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +31,8 @@ import java.util.UUID;
 
 @Service // 确保该注解存在，让Spring扫描为Bean
 public class ArticleServiceImpl implements ArticleService {
+    @Value("${uploadImagesDir}")
+    private String uploadImagesDir;//
 
     @Autowired
     private ArticleMapper articleMapper;
@@ -60,7 +63,7 @@ public class ArticleServiceImpl implements ArticleService {
     @SneakyThrows
     @Override
     public String upload(MultipartFile file){
-        final File folder = new File("D:\\Springboot\\img\\images");
+        final File folder = new File(uploadImagesDir);
         if(!folder.exists()){
             folder.mkdirs();
         }
