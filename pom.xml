@@ -125,10 +125,15 @@
             <artifactId>mybatis-spring</artifactId>
             <version>2.1.1</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba</groupId>-->
+<!--            <artifactId>druid-spring-boot-starter</artifactId>-->
+<!--            <version>1.1.10</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.10</version>
+            <artifactId>druid</artifactId>
+            <version>1.2.18</version> <!-- 稳定版，兼容JDK 1.8和MyBatis 3.5.x -->
         </dependency>
 
     </dependencies>

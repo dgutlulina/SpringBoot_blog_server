@@ -19,5 +19,7 @@ public interface StatisticMapper extends BaseMapper<Statistic> {
     @Select("select * from t_statistic where article_id=#{articleId}")
     public Statistic selectByArticleId(Integer articleId);
 
+    @Select("select sum(hits) from t_statistic")
+    public Integer selectTotalHits();
 
 }

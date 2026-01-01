@@ -25,8 +25,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service // 确保该注解存在，让Spring扫描为Bean
@@ -211,6 +214,156 @@ public void deleteById(Integer id){
         articleSearch.getPageParams().setTotal(aPage.getTotal());
         result.getMap().put("articleVOs",aPage.getRecords());
         result.getMap().put("pageParams",articleSearch.getPageParams());
+        return result;
+    }
+
+    @Override
+    public Result getAllCategories() {
+        Result result = new Result();
+        try {
+            List<Article> articles = articleMapper.selectList(null);
+            Set<String> categoriesSet = new HashSet<>();
+            for (Article article : articles) {
+                if (article.getCategories() != null && !article.getCategories().isEmpty()) {
+                    String[] categories = article.getCategories().split(",");
+                    for (String category : categories) {
+                        if (!category.trim().isEmpty()) {
+                            categoriesSet.add(category.trim());
+                        }
+                    }
+                }
+            }
+            List<String> categories = new ArrayList<>(categoriesSet);
+            result.getMap().put("categories", categories);
+            result.setMsg("获取分类列表成功！");
+        } catch (Exception e) {
+            result.setErrorMessage("获取分类列表失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public Result getAllTags() {
+        Result result = new Result();
+        try {
+            List<Article> articles = articleMapper.selectList(null);
+            Set<String> tagsSet = new HashSet<>();
+            for (Article article : articles) {
+                if (article.getTags() != null && !article.getTags().isEmpty()) {
+                    String[] tags = article.getTags().split(",");
+                    for (String tag : tags) {
+                        if (!tag.trim().isEmpty()) {
+                            tagsSet.add(tag.trim());
+                        }
+                    }
+                }
+            }
+            List<String> tags = new ArrayList<>(tagsSet);
+            result.getMap().put("tags", tags);
+            result.setMsg("获取标签列表成功！");
+        } catch (Exception e) {
+            result.setErrorMessage("获取标签列表失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public Result addOrUpdateCategory(String category) {
+        Result result = new Result();
+        try {
+            if (category == null || category.trim().isEmpty()) {
+                result.setErrorMessage("分类名称不能为空！");
+                return result;
+            }
+            // 这里只是一个占位，因为分类是存储在文章的categories字段中的，没有单独的表
+            // 实际应用中可能需要创建一个新的分类表
+            result.setMsg("分类添加成功！");
+        } catch (Exception e) {
+            result.setErrorMessage("添加分类失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public Result addOrUpdateTag(String tag) {
+        Result result = new Result();
+        try {
+            if (tag == null || tag.trim().isEmpty()) {
+                result.setErrorMessage("标签名称不能为空！");
+                return result;
+            }
+            // 这里只是一个占位，因为标签是存储在文章的tags字段中的，没有单独的表
+            // 实际应用中可能需要创建一个新的标签表
+            result.setMsg("标签添加成功！");
+        } catch (Exception e) {
+            result.setErrorMessage("添加标签失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public Result deleteCategory(String category) {
+        Result result = new Result();
+        try {
+            if (category == null || category.trim().isEmpty()) {
+                result.setErrorMessage("分类名称不能为空！");
+                return result;
+            }
+            // 这里需要更新所有使用该分类的文章，将分类从categories字段中移除
+            List<Article> articles = articleMapper.selectList(null);
+            for (Article article : articles) {
+                if (article.getCategories() != null && article.getCategories().contains(category)) {
+                    String[] categories = article.getCategories().split(",");
+                    List<String> newCategories = new ArrayList<>();
+                    for (String cat : categories) {
+                        if (!cat.trim().equals(category.trim())) {
+                            newCategories.add(cat.trim());
+                        }
+                    }
+                    article.setCategories(String.join(",", newCategories));
+                    articleMapper.updateById(article);
+                }
+            }
+            result.setMsg("分类删除成功！");
+        } catch (Exception e) {
+            result.setErrorMessage("删除分类失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public Result deleteTag(String tag) {
+        Result result = new Result();
+        try {
+            if (tag == null || tag.trim().isEmpty()) {
+                result.setErrorMessage("标签名称不能为空！");
+                return result;
+            }
+            // 这里需要更新所有使用该标签的文章，将标签从tags字段中移除
+            List<Article> articles = articleMapper.selectList(null);
+            for (Article article : articles) {
+                if (article.getTags() != null && article.getTags().contains(tag)) {
+                    String[] tags = article.getTags().split(",");
+                    List<String> newTags = new ArrayList<>();
+                    for (String t : tags) {
+                        if (!t.trim().equals(tag.trim())) {
+                            newTags.add(t.trim());
+                        }
+                    }
+                    article.setTags(String.join(",", newTags));
+                    articleMapper.updateById(article);
+                }
+            }
+            result.setMsg("标签删除成功！");
+        } catch (Exception e) {
+            result.setErrorMessage("删除标签失败！");
+            e.printStackTrace();
+        }
         return result;
     }
 

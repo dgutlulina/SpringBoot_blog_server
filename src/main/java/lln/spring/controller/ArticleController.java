@@ -168,4 +168,54 @@ public Result upload(MultipartFile file) {
         return result;
     }
 
+    // 分类管理接口
+    @PostMapping("/getAllCategories")
+    public Result getAllCategories() {
+        Result result = new Result();
+        try {
+            result = articleService.getAllCategories();
+        } catch (Exception e) {
+            result.setErrorMessage("获取分类失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @PostMapping("/deleteCategory")
+    public Result deleteCategory(String category) {
+        Result result = new Result();
+        try {
+            result = articleService.deleteCategory(category);
+        } catch (Exception e) {
+            result.setErrorMessage("删除分类失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // 标签管理接口
+    @PostMapping("/getAllTags")
+    public Result getAllTags() {
+        Result result = new Result();
+        try {
+            result = articleService.getAllTags();
+        } catch (Exception e) {
+            result.setErrorMessage("获取标签失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @PostMapping("/deleteTag")
+    public Result deleteTag(String tag) {
+        Result result = new Result();
+        try {
+            result = articleService.deleteTag(tag);
+        } catch (Exception e) {
+            result.setErrorMessage("删除标签失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }

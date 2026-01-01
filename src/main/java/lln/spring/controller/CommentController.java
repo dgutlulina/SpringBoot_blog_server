@@ -52,4 +52,56 @@ public class CommentController {
         }
         return result;
     }
+
+    /**
+     * 获取所有评论的分页列表
+     * @param pageParams 分页参数
+     * @return 评论列表
+     */
+    @PostMapping("/getAllComments")
+    public Result getAllComments(@RequestBody PageParams pageParams){
+        Result result=new Result();
+        try{
+            result=commentService.getAllComments(pageParams);
+        }catch (Exception e){
+            result.setErrorMessage("查询评论失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 更新评论状态
+     * @param id 评论ID
+     * @param status 新状态
+     * @return 更新结果
+     */
+    @PostMapping("/updateStatus")
+    public Result updateCommentStatus(Integer id, String status){
+        Result result=new Result();
+        try{
+            result=commentService.updateCommentStatus(id, status);
+        }catch (Exception e){
+            result.setErrorMessage("更新评论状态失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 删除评论
+     * @param id 评论ID
+     * @return 删除结果
+     */
+    @PostMapping("/delete")
+    public Result deleteComment(Integer id){
+        Result result=new Result();
+        try{
+            result=commentService.deleteComment(id);
+        }catch (Exception e){
+            result.setErrorMessage("删除评论失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
