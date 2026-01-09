@@ -59,9 +59,29 @@ public Result getIndexData(){
         }
         return result;
     }
+    /**
+     * 获取当前登录用户的ID
+     * @return 用户ID
+     */
+    private Integer getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getName())) {
+            return null;
+        }
+        String username = authentication.getName();
+        User user = userService.getUserInfoByUsername(username); // 使用IUserService接口的正确方法
+        return user != null ? user.getId() : null;
+    }
+    
     @RequestMapping("/publishArticle")
     public String publishArticle(String type, @RequestBody Article article){
         try{
+            // 获取当前登录用户ID并设置为文章作者
+            Integer userId = getCurrentUserId();
+            if (userId != null) {
+                article.setAuthorId(userId); // 设置作者ID
+            }
+            
             if(article.getThumbnail()==null || !article.getThumbnail().contains("/api")){
                 article.setThumbnail("/api/images/6.png");//设置默认的文章标题图片
             }

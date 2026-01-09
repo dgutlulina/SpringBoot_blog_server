@@ -55,8 +55,8 @@ public class SecurityConfig { //权限配置
                 // 仅管理员可访问的接口
                 .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/delete/getById")).hasRole("admin")
                 .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/getPageOfArticleByU")).hasRole("admin")
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/publish")).hasRole("admin")
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/publishArticle")).hasRole("admin") //管理员权限
+                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/publish")).authenticated()
+                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/publishArticle")).authenticated() // 认证用户可访问
                 // 仅普通会员可访问的接口
                 .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/blog/insert")).hasRole("common") //普通会员权限
                 // 其他请求需要认证
