@@ -601,7 +601,7 @@ public class ArticleServiceImpl implements ArticleService {
             // 查询用户发布的文章列表，带分页
             Page<Article> page = new Page<>(pageParams.getPage(), pageParams.getRows());
             QueryWrapper<Article> wrapper = new QueryWrapper<>();
-            wrapper.eq("user_id", userId); // 假设Article实体中有user_id字段
+            wrapper.eq("author_id", userId); // 使用Article实体中的author_id字段
             wrapper.orderByDesc("created");
             
             IPage<Article> aPage = articleMapper.selectPage(page, wrapper);
