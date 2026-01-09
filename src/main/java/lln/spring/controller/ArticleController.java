@@ -325,6 +325,7 @@ public Result upload(MultipartFile file) {
             Result result = new Result();
             result.setSuccess(true);
             result.setMsg(isLiked ? "已点赞" : "未点赞");
+            result.setData(isLiked); // 添加这行来返回实际的点赞状态
             return result;
         } catch (Exception e) {
             Result result = new Result();
@@ -341,6 +342,7 @@ public Result upload(MultipartFile file) {
             Result result = new Result();
             result.setSuccess(true);
             result.setMsg(isFavorited ? "已收藏" : "未收藏");
+            result.setData(isFavorited); // 添加这行来返回实际的收藏状态
             return result;
         } catch (Exception e) {
             Result result = new Result();
