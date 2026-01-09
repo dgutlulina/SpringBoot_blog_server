@@ -1,7 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="lln.spring.mapper.ArticleMapper">
-    <select id="getPage" resultType="lln.spring.entity.Article">
-        select * from t_article ORDER BY id DESC limit #{offset},#{size}
+
+    <!-- 获取指定用户的帖子列表 -->
+    <select id="selectArticlesByUserId" resultType="lln.spring.entity.Article">
+        SELECT * FROM t_article
+        WHERE 1=1
+        <if test="userId != null">
+            AND author_id = #{userId}
+        </if>
+        ORDER BY created DESC
+        LIMIT #{offset}, #{limit}
     </select>
+
+    <!-- 获取指定用户点赞的帖子列表 -->
+    <select id="selectArticlesLikedByUserId" resultType="lln.spring.entity.Article">
+        SELECT a.* FROM t_article a
+        INNER JOIN t_like l ON a.id = l.article_id
+        WHERE l.user_id = #{userId}
+        ORDER BY l.created_at DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 获取指定用户收藏的帖子列表 -->
+    <select id="selectArticlesFavoritedByUserId" resultType="lln.spring.entity.Article">
+        SELECT a.* FROM t_article a
+        INNER JOIN t_favorite f ON a.id = f.article_id
+        WHERE f.user_id = #{userId}
+        ORDER BY f.created_at DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 获取指定用户帖子总数 -->
+    <select id="countArticlesByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM t_article
+        WHERE 1=1
+        <if test="userId != null">
+            AND author_id = #{userId}
+        </if>
+    </select>
+
+    <!-- 获取指定用户点赞的帖子总数 -->
+    <select id="countArticlesLikedByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM t_like
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 获取指定用户收藏的帖子总数 -->
+    <select id="countArticlesFavoritedByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM t_favorite
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>

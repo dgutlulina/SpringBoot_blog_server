@@ -16,14 +16,14 @@ import java.util.List;
 
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
-    @Select("SELECT t_article.id,title,t_article.created,categories,t_statistic.hits FROM t_article , t_statistic ${ew.customSqlSegment}")
+    @Select("SELECT t_article.id,title,t_article.created,categories,t_statistic.hits,t_statistic.heart_count FROM t_article , t_statistic ${ew.customSqlSegment}")
     IPage<ArticleVO> getAPageOfArticleVO(IPage<ArticleVO> page, @Param("ew") Wrapper wrapper);
 
     public List<Article> getPage(@Param("offset")Integer offset, @Param("size")Integer size);
 
     @Select("SELECT * FROM t_article ${ew.customSqlSegment}")
     IPage<Article> getAPageOfArticle(IPage<Article> page, @Param("ew") Wrapper wrapper);
-    @Select("SELECT id,categories,title,created FROM t_article ${ew.customSqlSegment}")
+    @Select("SELECT t_article.id,categories,title,t_article.created,t_statistic.hits,t_statistic.heart_count FROM t_article , t_statistic WHERE t_article.id = t_statistic.article_id ${ew.customSqlSegment}")
     IPage<ArticleVO> articleSearch(IPage<ArticleVO> page, @Param("ew") Wrapper wrapper);
 
 }

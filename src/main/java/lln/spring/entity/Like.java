@@ -8,11 +8,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ * 用户点赞表
  * </p>
  *
  * @author baomidou
@@ -20,29 +20,18 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@TableName("t_user")
-public class User implements Serializable {
+@TableName("t_like")
+public class Like implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private String username;
+    private Integer userId;
 
-    private String password;
+    private Integer articleId;
 
-    private String email;
-    
-    private String bio;
-    
-    private String avatar;
-    
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date created;
-    
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updatedAt;
-
-    private Boolean valid;
+    private LocalDateTime createdAt;
 }

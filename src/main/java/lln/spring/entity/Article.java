@@ -3,6 +3,7 @@ package lln.spring.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,5 +27,13 @@ public class Article {
       private String tags; // 文章标签
      private Boolean allowComment; // 是否允许评论
      private String thumbnail; // 文章缩略图
+     @TableField("author_id")
+     private Integer authorId; // 作者ID
+     
+     // 用于表示当前用户是否点赞和收藏
+     @TableField(exist = false)
+     private Boolean liked = false; // 是否已点赞
+     @TableField(exist = false)
+     private Boolean favorited = false; // 是否已收藏
 
 }

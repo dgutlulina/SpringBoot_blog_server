@@ -17,10 +17,17 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
     @Value("${uploadImagesDir}")
     private String uploadImagesDir;
+    
+    @Value("${uploadAvatarsDir}")
+    private String uploadAvatarsDir;
+    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/api/images/**")
                 .addResourceLocations("file:"+uploadImagesDir);
+        
+        registry.addResourceHandler("/api/images/avatars/**")
+                .addResourceLocations("file:"+uploadAvatarsDir);
     }
 
     @Override

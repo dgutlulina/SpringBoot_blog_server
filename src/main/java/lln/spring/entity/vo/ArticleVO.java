@@ -14,6 +14,10 @@ public class ArticleVO {
     private String title;
     private Date created;
     private String categories;
+    private String thumbnail; // 文章缩略图
 
     private Integer hits;
+    private Integer heartCount;
+    private boolean isLiked;
+    private boolean isFavorited;
 }

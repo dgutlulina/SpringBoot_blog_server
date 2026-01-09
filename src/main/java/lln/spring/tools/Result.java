@@ -32,4 +32,38 @@ public class Result {
         this.success = false;
         this.msg = s;
     }
+    
+    public void setData(Object data) {
+        this.map.put("data", data);
+    }
+    
+    public static Result success(Object data) {
+        Result result = new Result();
+        result.setSuccess(true);
+        result.setMsg("操作成功");
+        result.getMap().put("data", data);
+        return result;
+    }
+    
+    public static Result success(Object data, String msg) {
+        Result result = new Result();
+        result.setSuccess(true);
+        result.setMsg(msg);
+        result.getMap().put("data", data);
+        return result;
+    }
+    
+    public static Result success(String msg) {
+        Result result = new Result();
+        result.setSuccess(true);
+        result.setMsg(msg);
+        return result;
+    }
+    
+    public static Result error(String msg) {
+        Result result = new Result();
+        result.setSuccess(false);
+        result.setMsg(msg);
+        return result;
+    }
 }

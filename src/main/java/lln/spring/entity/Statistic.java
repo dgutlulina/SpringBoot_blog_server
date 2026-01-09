@@ -43,6 +43,8 @@ public class Statistic implements Serializable {
      */
     private Integer commentsNum;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date created;
+    /**
+     * 点赞数
+     */
+    private Integer heartCount;
 }

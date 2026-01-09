@@ -23,14 +23,15 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
     private UserMapper userMapper;
 
     @Override//用户验证成功后执行
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, 
                                         Authentication authentication) throws IOException, ServletException {
         String username = request.getParameter("username");//客户端传过来的用户名
         UserDTO userDTO = UserDTO.entityToDto(userMapper.findByName(username));
         userDTO.setAuthorities(userMapper.findAuthorityByName(username));
         request.getSession().setAttribute("user", userDTO);//将用户数据保存到session中
         Result result=new Result();
-        result.getMap().put("user",userDTO);
+        result.setSuccess(true);
+        result.getMap().put("data", userDTO);
 
         //返回数据给客户端，用于客户端路由跳转控制（如管理员只能访问某些功能）
         response.setContentType("application/json;charset=UTF-8");

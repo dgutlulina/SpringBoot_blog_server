@@ -1,10 +1,14 @@
 lln\spring\mapper\ArticleMapper.class
+lln\spring\controller\UserController.class
 lln\spring\service\impl\CommentServiceImpl.class
 lln\spring\entity\Article.class
+lln\spring\mapper\FavoriteMapper.class
 lln\spring\service\ArticleService.class
+lln\spring\exception\GlobalExceptionHandler.class
 lln\spring\service\impl\ArticleServiceImpl.class
 lln\spring\entity\Comment.class
 lln\spring\service\impl\StatisticServiceImpl.class
+lln\spring\entity\Favorite.class
 lln\spring\mapper\CommentMapper.class
 lln\spring\config\security\SecurityConfig.class
 lln\spring\controller\CommentController.class
@@ -22,8 +26,13 @@ lln\spring\BlogServerApplication.class
 lln\spring\entity\dto\UserDTO.class
 lln\spring\service\ICommentService.class
 lln\spring\service\IUserService.class
+lln\spring\controller\ProfileController.class
+lln\spring\entity\vo\UserInfoVO.class
 lln\spring\entity\Statistic.class
 lln\spring\service\impl\UserServiceImpl.class
+lln\spring\mapper\LikeMapper.class
+lln\spring\entity\Like.class
+lln\spring\entity\dto\PasswordUpdateDTO.class
 lln\spring\config\WebConfig.class
 lln\spring\service\IStatisticService.class
 lln\spring\tools\Result.class
@@ -31,4 +40,5 @@ lln\spring\config\security\SecurityConfig$1.class
 lln\spring\config\security\MyAuthenticationFailureHandler.class
 lln\spring\controller\StatisticController.class
 lln\spring\mapper\UserMapper.class
+lln\spring\entity\dto\UserUpdateDTO.class
 lln\spring\entity\User.class

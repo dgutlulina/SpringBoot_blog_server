@@ -23,3 +23,4 @@ Mybatis-plus:
 
 #自定义配置
 uploadImagesDir: D:\Springboot\img\images\
+uploadAvatarsDir: D:\Springboot\img\avatars\

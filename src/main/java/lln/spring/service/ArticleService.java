@@ -78,5 +78,101 @@ public Article selectById(Integer id);
      * @return 操作结果
      */
     public Result deleteTag(String tag);
+    
+    /**
+     * 点赞/取消点赞
+     * @param articleId 文章ID
+     * @param userId 用户ID
+     * @return 操作结果
+     */
+    public Result toggleLike(Integer articleId, Integer userId);
+    
+    /**
+     * 收藏/取消收藏
+     * @param articleId 文章ID
+     * @param userId 用户ID
+     * @return 操作结果
+     */
+    public Result toggleFavorite(Integer articleId, Integer userId);
+    
+    /**
+     * 获取用户收藏的帖子列表
+     * @param userId 用户ID
+     * @param pageParams 分页参数
+     * @return 收藏的帖子列表
+     */
+    public Result getFavoriteArticlesByUserId(Integer userId, PageParams pageParams);
+    
+    /**
+     * 获取用户发布的文章
+     * @param userId 用户ID
+     * @param pageParams 分页参数
+     * @return 用户发布的文章列表
+     */
+    public Result getUserArticles(Integer userId, PageParams pageParams);
+    
+    /**
+     * 获取用户点赞的文章
+     * @param userId 用户ID
+     * @param pageParams 分页参数
+     * @return 用户点赞的文章列表
+     */
+    public Result getUserLikedArticles(Integer userId, PageParams pageParams);
+    
+    /**
+     * 获取用户收藏的文章
+     * @param userId 用户ID
+     * @param pageParams 分页参数
+     * @return 用户收藏的文章列表
+     */
+    public Result getUserFavoritedArticles(Integer userId, PageParams pageParams);
+    
+    /**
+     * 检查文章是否被用户点赞
+     * @param userId 用户ID
+     * @param articleId 文章ID
+     * @return 是否已点赞
+     */
+    public boolean isArticleLikedByUser(Integer userId, Integer articleId);
+    
+    /**
+     * 检查文章是否被用户收藏
+     * @param userId 用户ID
+     * @param articleId 文章ID
+     * @return 是否已收藏
+     */
+    public boolean isArticleFavoritedByUser(Integer userId, Integer articleId);
+    
+    /**
+     * 点赞文章
+     * @param userId 用户ID
+     * @param articleId 文章ID
+     * @return 操作结果
+     */
+    public boolean likeArticle(Integer userId, Integer articleId);
+    
+    /**
+     * 取消点赞文章
+     * @param userId 用户ID
+     * @param articleId 文章ID
+     * @return 操作结果
+     */
+    public boolean unlikeArticle(Integer userId, Integer articleId);
+    
+    /**
+     * 收藏文章
+     * @param userId 用户ID
+     * @param articleId 文章ID
+     * @return 操作结果
+     */
+    public boolean favoriteArticle(Integer userId, Integer articleId);
+    
+    /**
+     * 取消收藏文章
+     * @param userId 用户ID
+     * @param articleId 文章ID
+     * @return 操作结果
+     */
+    public boolean unfavoriteArticle(Integer userId, Integer articleId);
 
 }
