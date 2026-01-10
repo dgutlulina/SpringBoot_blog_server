@@ -23,8 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 添加外部上传目录，同时添加项目内静态资源目录作为后备选项
         registry.addResourceHandler("/api/images/**")
-                .addResourceLocations("file:"+uploadImagesDir);
+                .addResourceLocations("file:"+uploadImagesDir, "classpath:/static/images/");
         
         registry.addResourceHandler("/api/images/avatars/**")
                 .addResourceLocations("file:"+uploadAvatarsDir);
