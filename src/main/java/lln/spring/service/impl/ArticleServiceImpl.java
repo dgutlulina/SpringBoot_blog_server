@@ -28,6 +28,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -621,24 +623,46 @@ public class ArticleServiceImpl implements ArticleService {
             IPage<Article> aPage = articleMapper.selectPage(page, wrapper);
             List<Article> articles = aPage.getRecords();
             
-            // 获取当前用户ID
-            Integer currentUserId = getCurrentUserId();
-            
-            // 填充点赞和收藏状态
-            if (currentUserId != null && articles != null && !articles.isEmpty()) {
+            // 转换为ArticleVO对象，包含分类和浏览量信息
+            List<ArticleVO> articleVOs = new ArrayList<>();
+            if (articles != null && !articles.isEmpty()) {
                 for (Article article : articles) {
-                    // 检查是否点赞
-                    Like like = likeMapper.findByPostIdAndUserId(article.getId(), currentUserId);
-                    article.setLiked(like != null);
+                    ArticleVO articleVO = new ArticleVO();
+                    articleVO.setId(article.getId());
+                    articleVO.setTitle(article.getTitle());
+                    articleVO.setCreated(article.getCreated());
+                    articleVO.setCategories(article.getCategories()); // 分类字段
+                    articleVO.setThumbnail(article.getThumbnail());
                     
-                    // 检查是否收藏
-                    Favorite favorite = favoriteMapper.findByPostIdAndUserId(article.getId(), currentUserId);
-                    article.setFavorited(favorite != null);
+                    // 获取文章统计信息（浏览量）
+                    Statistic statistic = statisticMapper.selectByArticleId(article.getId());
+                    if (statistic != null) {
+                        articleVO.setHits(statistic.getHits()); // 浏览量
+                        articleVO.setHeartCount(statistic.getHeartCount()); // 点赞数
+                    } else {
+                        articleVO.setHits(0);
+                        articleVO.setHeartCount(0);
+                    }
+                    
+                    // 获取当前用户ID，检查是否已点赞和收藏
+                    Integer currentUserId = getCurrentUserId();
+                    if (currentUserId != null) {
+                        Like like = likeMapper.findByPostIdAndUserId(article.getId(), currentUserId);
+                        articleVO.setLiked(like != null);
+                        
+                        Favorite favorite = favoriteMapper.findByPostIdAndUserId(article.getId(), currentUserId);
+                        articleVO.setFavorited(favorite != null);
+                    } else {
+                        articleVO.setLiked(false);
+                        articleVO.setFavorited(false);
+                    }
+                    
+                    articleVOs.add(articleVO);
                 }
             }
             
             pageParams.setTotal(aPage.getTotal());
-            result.getMap().put("articles", articles);
+            result.getMap().put("articles", articleVOs);
             result.getMap().put("pageParams", pageParams);
             result.setMsg("获取用户文章成功");
         } catch (Exception e) {
