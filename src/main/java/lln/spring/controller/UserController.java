@@ -110,6 +110,41 @@ public class UserController {
     }
 
     /**
+     * 批量更新用户信息（用户名和简介）
+     */
+    @PostMapping("")
+    public Result updateUserInfo(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+            return Result.error("用户未登录");
+        }
+        
+        String currentUsername = authentication.getName();
+        User currentUser = userService.getUserInfoByUsername(currentUsername);
+        if (currentUser == null) {
+            return Result.error("用户不存在");
+        }
+
+        // 更新用户名（如果提供）
+        if (userUpdateDTO.getUsername() != null && !userUpdateDTO.getUsername().trim().isEmpty()) {
+            boolean usernameSuccess = userService.updateUsername(currentUser.getId(), userUpdateDTO.getUsername());
+            if (!usernameSuccess) {
+                return Result.error("用户名更新失败");
+            }
+        }
+
+        // 更新简介（如果提供）
+        if (userUpdateDTO.getBio() != null) {
+            boolean bioSuccess = userService.updateBio(currentUser.getId(), userUpdateDTO.getBio());
+            if (!bioSuccess) {
+                return Result.error("个人简介更新失败");
+            }
+        }
+
+        return Result.success("用户信息更新成功");
+    }
+
+    /**
      * 上传头像
      */
     @PostMapping("/avatar")
