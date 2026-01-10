@@ -41,6 +41,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import lln.spring.entity.Category;
+import lln.spring.entity.Tag;
+import lln.spring.mapper.CategoryMapper;
+import lln.spring.mapper.TagMapper;
+
 @Service // 确保该注解存在，让Spring扫描为Bean
 public class ArticleServiceImpl implements ArticleService {
     @Value("${uploadImagesDir}")
@@ -97,6 +102,10 @@ public class ArticleServiceImpl implements ArticleService {
     private CommentMapper commentMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
+    @Autowired
+    private TagMapper tagMapper;
 
     /**
      * 获取当前登录用户的ID
@@ -338,20 +347,13 @@ public class ArticleServiceImpl implements ArticleService {
     public Result getAllCategories() {
         Result result = new Result();
         try {
-            List<Article> articles = articleMapper.selectList(null);
-            Set<String> categoriesSet = new HashSet<>();
-            for (Article article : articles) {
-                if (article.getCategories() != null && !article.getCategories().isEmpty()) {
-                    String[] categories = article.getCategories().split(",");
-                    for (String category : categories) {
-                        if (!category.trim().isEmpty()) {
-                            categoriesSet.add(category.trim());
-                        }
-                    }
-                }
+            // 从分类表中获取所有分类
+            List<Category> categories = categoryMapper.selectList(null);
+            List<String> categoryNames = new ArrayList<>();
+            for (Category category : categories) {
+                categoryNames.add(category.getName());
             }
-            List<String> categories = new ArrayList<>(categoriesSet);
-            result.getMap().put("categories", categories);
+            result.getMap().put("categories", categoryNames);
             result.setMsg("获取分类列表成功！");
         } catch (Exception e) {
             result.setErrorMessage("获取分类列表失败！");
@@ -364,20 +366,13 @@ public class ArticleServiceImpl implements ArticleService {
     public Result getAllTags() {
         Result result = new Result();
         try {
-            List<Article> articles = articleMapper.selectList(null);
-            Set<String> tagsSet = new HashSet<>();
-            for (Article article : articles) {
-                if (article.getTags() != null && !article.getTags().isEmpty()) {
-                    String[] tags = article.getTags().split(",");
-                    for (String tag : tags) {
-                        if (!tag.trim().isEmpty()) {
-                            tagsSet.add(tag.trim());
-                        }
-                    }
-                }
+            // 从标签表中获取所有标签
+            List<Tag> tags = tagMapper.selectList(null);
+            List<String> tagNames = new ArrayList<>();
+            for (Tag tag : tags) {
+                tagNames.add(tag.getName());
             }
-            List<String> tags = new ArrayList<>(tagsSet);
-            result.getMap().put("tags", tags);
+            result.getMap().put("tags", tagNames);
             result.setMsg("获取标签列表成功！");
         } catch (Exception e) {
             result.setErrorMessage("获取标签列表失败！");
@@ -394,30 +389,28 @@ public class ArticleServiceImpl implements ArticleService {
                 result.setErrorMessage("分类名称不能为空！");
                 return result;
             }
+            
             // 检查分类是否已存在
-            List<Article> articles = articleMapper.selectList(null);
-            boolean categoryExists = false;
-            for (Article article : articles) {
-                if (article.getCategories() != null && article.getCategories().contains(category.trim())) {
-                    categoryExists = true;
-                    break;
-                }
+            com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<Category> queryWrapper = 
+                new com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<>();
+            queryWrapper.eq("name", category.trim());
+            Category existingCategory = categoryMapper.selectOne(queryWrapper);
+            
+            if (existingCategory == null) {
+                // 分类不存在，创建新分类
+                Category newCategory = new Category();
+                newCategory.setName(category.trim());
+                newCategory.setCreated(new Date());
+                categoryMapper.insert(newCategory);
+            } else {
+                // 分类已存在，更新时间
+                existingCategory.setCreated(new Date());
+                categoryMapper.updateById(existingCategory);
             }
-            // 如果分类不存在，添加到数据库中
-            if (!categoryExists) {
-                // 可以创建一个示例文章来存储这个新分类
-                // 但更实用的做法是创建一个分类表，这里我们暂时不创建新表
-                // 而是在现有文章中存储分类，如果没有文章则创建一个占位文章
-                Article placeholderArticle = new Article();
-                placeholderArticle.setTitle("分类占位文章 - " + category.trim());
-                placeholderArticle.setContent("这是一个占位文章，用于存储分类信息：" + category.trim());
-                placeholderArticle.setCategories(category.trim());
-                placeholderArticle.setCreated(new Date());
-                this.publish(placeholderArticle); // 使用现有的publish方法
-            }
-            result.setMsg("分类添加成功！");
+            
+            result.setMsg("分类操作成功！");
         } catch (Exception e) {
-            result.setErrorMessage("添加分类失败！");
+            result.setErrorMessage("操作分类失败！");
             e.printStackTrace();
         }
         return result;
@@ -431,30 +424,28 @@ public class ArticleServiceImpl implements ArticleService {
                 result.setErrorMessage("标签名称不能为空！");
                 return result;
             }
+            
             // 检查标签是否已存在
-            List<Article> articles = articleMapper.selectList(null);
-            boolean tagExists = false;
-            for (Article article : articles) {
-                if (article.getTags() != null && article.getTags().contains(tag.trim())) {
-                    tagExists = true;
-                    break;
-                }
+            com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<Tag> queryWrapper = 
+                new com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<>();
+            queryWrapper.eq("name", tag.trim());
+            Tag existingTag = tagMapper.selectOne(queryWrapper);
+            
+            if (existingTag == null) {
+                // 标签不存在，创建新标签
+                Tag newTag = new Tag();
+                newTag.setName(tag.trim());
+                newTag.setCreated(new Date());
+                tagMapper.insert(newTag);
+            } else {
+                // 标签已存在，更新时间
+                existingTag.setCreated(new Date());
+                tagMapper.updateById(existingTag);
             }
-            // 如果标签不存在，添加到数据库中
-            if (!tagExists) {
-                // 可以创建一个示例文章来存储这个新标签
-                // 但更实用的做法是创建一个标签表，这里我们暂时不创建新表
-                // 而是在现有文章中存储标签，如果没有文章则创建一个占位文章
-                Article placeholderArticle = new Article();
-                placeholderArticle.setTitle("标签占位文章 - " + tag.trim());
-                placeholderArticle.setContent("这是一个占位文章，用于存储标签信息：" + tag.trim());
-                placeholderArticle.setTags(tag.trim());
-                placeholderArticle.setCreated(new Date());
-                this.publish(placeholderArticle); // 使用现有的publish方法
-            }
-            result.setMsg("标签添加成功！");
+            
+            result.setMsg("标签操作成功！");
         } catch (Exception e) {
-            result.setErrorMessage("添加标签失败！");
+            result.setErrorMessage("操作标签失败！");
             e.printStackTrace();
         }
         return result;
@@ -468,21 +459,13 @@ public class ArticleServiceImpl implements ArticleService {
                 result.setErrorMessage("分类名称不能为空！");
                 return result;
             }
-            // 这里需要更新所有使用该分类的文章，将分类从categories字段中移除
-            List<Article> articles = articleMapper.selectList(null);
-            for (Article article : articles) {
-                if (article.getCategories() != null && article.getCategories().contains(category)) {
-                    String[] categories = article.getCategories().split(",");
-                    List<String> newCategories = new ArrayList<>();
-                    for (String cat : categories) {
-                        if (!cat.trim().equals(category.trim())) {
-                            newCategories.add(cat.trim());
-                        }
-                    }
-                    article.setCategories(String.join(",", newCategories));
-                    articleMapper.updateById(article);
-                }
-            }
+            
+            // 从分类表中删除分类
+            com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<Category> queryWrapper = 
+                new com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<>();
+            queryWrapper.eq("name", category.trim());
+            categoryMapper.delete(queryWrapper);
+            
             result.setMsg("分类删除成功！");
         } catch (Exception e) {
             result.setErrorMessage("删除分类失败！");
@@ -499,21 +482,13 @@ public class ArticleServiceImpl implements ArticleService {
                 result.setErrorMessage("标签名称不能为空！");
                 return result;
             }
-            // 这里需要更新所有使用该标签的文章，将标签从tags字段中移除
-            List<Article> articles = articleMapper.selectList(null);
-            for (Article article : articles) {
-                if (article.getTags() != null && article.getTags().contains(tag)) {
-                    String[] tags = article.getTags().split(",");
-                    List<String> newTags = new ArrayList<>();
-                    for (String t : tags) {
-                        if (!t.trim().equals(tag.trim())) {
-                            newTags.add(t.trim());
-                        }
-                    }
-                    article.setTags(String.join(",", newTags));
-                    articleMapper.updateById(article);
-                }
-            }
+            
+            // 从标签表中删除标签
+            com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<Tag> queryWrapper = 
+                new com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<>();
+            queryWrapper.eq("name", tag.trim());
+            tagMapper.delete(queryWrapper);
+            
             result.setMsg("标签删除成功！");
         } catch (Exception e) {
             result.setErrorMessage("删除标签失败！");
