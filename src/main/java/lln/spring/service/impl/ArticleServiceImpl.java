@@ -236,6 +236,7 @@ public class ArticleServiceImpl implements ArticleService {
         Article newArticle=articleMapper.selectById(article.getId());
         if (newArticle != null) {
             newArticle.setModified(new Date());
+            newArticle.setCategories(article.getCategories()); // 添加分类字段的更新
             newArticle.setTags(article.getTags());
             newArticle.setContent(article.getContent());
             newArticle.setTitle(article.getTitle());
@@ -393,8 +394,27 @@ public class ArticleServiceImpl implements ArticleService {
                 result.setErrorMessage("分类名称不能为空！");
                 return result;
             }
-            // 这里只是一个占位，因为分类是存储在文章的categories字段中的，没有单独的表
-            // 实际应用中可能需要创建一个新的分类表
+            // 检查分类是否已存在
+            List<Article> articles = articleMapper.selectList(null);
+            boolean categoryExists = false;
+            for (Article article : articles) {
+                if (article.getCategories() != null && article.getCategories().contains(category.trim())) {
+                    categoryExists = true;
+                    break;
+                }
+            }
+            // 如果分类不存在，添加到数据库中
+            if (!categoryExists) {
+                // 可以创建一个示例文章来存储这个新分类
+                // 但更实用的做法是创建一个分类表，这里我们暂时不创建新表
+                // 而是在现有文章中存储分类，如果没有文章则创建一个占位文章
+                Article placeholderArticle = new Article();
+                placeholderArticle.setTitle("分类占位文章 - " + category.trim());
+                placeholderArticle.setContent("这是一个占位文章，用于存储分类信息：" + category.trim());
+                placeholderArticle.setCategories(category.trim());
+                placeholderArticle.setCreated(new Date());
+                this.publish(placeholderArticle); // 使用现有的publish方法
+            }
             result.setMsg("分类添加成功！");
         } catch (Exception e) {
             result.setErrorMessage("添加分类失败！");
@@ -411,8 +431,27 @@ public class ArticleServiceImpl implements ArticleService {
                 result.setErrorMessage("标签名称不能为空！");
                 return result;
             }
-            // 这里只是一个占位，因为标签是存储在文章的tags字段中的，没有单独的表
-            // 实际应用中可能需要创建一个新的标签表
+            // 检查标签是否已存在
+            List<Article> articles = articleMapper.selectList(null);
+            boolean tagExists = false;
+            for (Article article : articles) {
+                if (article.getTags() != null && article.getTags().contains(tag.trim())) {
+                    tagExists = true;
+                    break;
+                }
+            }
+            // 如果标签不存在，添加到数据库中
+            if (!tagExists) {
+                // 可以创建一个示例文章来存储这个新标签
+                // 但更实用的做法是创建一个标签表，这里我们暂时不创建新表
+                // 而是在现有文章中存储标签，如果没有文章则创建一个占位文章
+                Article placeholderArticle = new Article();
+                placeholderArticle.setTitle("标签占位文章 - " + tag.trim());
+                placeholderArticle.setContent("这是一个占位文章，用于存储标签信息：" + tag.trim());
+                placeholderArticle.setTags(tag.trim());
+                placeholderArticle.setCreated(new Date());
+                this.publish(placeholderArticle); // 使用现有的publish方法
+            }
             result.setMsg("标签添加成功！");
         } catch (Exception e) {
             result.setErrorMessage("添加标签失败！");

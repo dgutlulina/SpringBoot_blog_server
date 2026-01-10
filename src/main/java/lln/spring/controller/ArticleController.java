@@ -209,6 +209,18 @@ public Result upload(MultipartFile file) {
         return result;
     }
 
+    @PostMapping("/addOrUpdateCategory")
+    public Result addOrUpdateCategory(String category) {
+        Result result = new Result();
+        try {
+            result = articleService.addOrUpdateCategory(category);
+        } catch (Exception e) {
+            result.setErrorMessage("操作分类失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     @PostMapping("/deleteCategory")
     public Result deleteCategory(String category) {
         Result result = new Result();
@@ -229,6 +241,18 @@ public Result upload(MultipartFile file) {
             result = articleService.getAllTags();
         } catch (Exception e) {
             result.setErrorMessage("获取标签失败！");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @PostMapping("/addOrUpdateTag")
+    public Result addOrUpdateTag(String tag) {
+        Result result = new Result();
+        try {
+            result = articleService.addOrUpdateTag(tag);
+        } catch (Exception e) {
+            result.setErrorMessage("操作标签失败！");
             e.printStackTrace();
         }
         return result;
