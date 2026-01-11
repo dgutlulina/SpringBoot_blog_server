@@ -23,7 +23,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     @Select("SELECT * FROM t_article ${ew.customSqlSegment}")
     IPage<Article> getAPageOfArticle(IPage<Article> page, @Param("ew") Wrapper wrapper);
-    @Select("SELECT t_article.id,categories,title,t_article.created,t_statistic.hits,t_statistic.heart_count FROM t_article , t_statistic WHERE t_article.id = t_statistic.article_id ${ew.customSqlSegment}")
+    @Select("SELECT t_article.id,categories,title,t_article.created,t_statistic.hits,t_statistic.heart_count FROM t_article LEFT JOIN t_statistic ON t_article.id = t_statistic.article_id ${ew.customSqlSegment}")
     IPage<ArticleVO> articleSearch(IPage<ArticleVO> page, @Param("ew") Wrapper wrapper);
     
     // 从XML映射文件中定义的方法

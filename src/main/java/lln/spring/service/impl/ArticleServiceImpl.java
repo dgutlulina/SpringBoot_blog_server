@@ -307,19 +307,43 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Result articleSearch(ArticleSearch articleSearch){
+        // 检查参数是否为空
+        if (articleSearch == null || articleSearch.getArticleCondition() == null || articleSearch.getPageParams() == null) {
+            Result result = new Result();
+            result.setErrorMessage("参数错误");
+            return result;
+        }
+        
+        // 使用Article表的别名来避免冲突
         QueryWrapper<ArticleVO> wrapper = new QueryWrapper<>();
-        wrapper.orderBy(true, false, "id");
+        wrapper.apply("t_article.id = t_statistic.article_id"); // 确保连接条件
+        wrapper.orderByDesc("t_article.id"); // 使用表别名
 
-        wrapper.like(articleSearch.getArticleCondition().getTitle()!="", "title",
-                articleSearch.getArticleCondition().getTitle());
-        wrapper.ge(articleSearch.getArticleCondition().getStartDate()!=null, "created",
-                articleSearch.getArticleCondition().getStartDate());
-        wrapper.le(articleSearch.getArticleCondition().getEndDate()!=null, "created",
-                articleSearch.getArticleCondition().getEndDate());
+        // 安全地获取标题并进行搜索，处理可能的空值
+        String title = articleSearch.getArticleCondition().getTitle();
+        if (title != null && !title.trim().isEmpty()) {
+            wrapper.like("t_article.title", title.trim());
+        }
+        
+        // 安全地处理日期范围
+        if (articleSearch.getArticleCondition().getStartDate() != null) {
+            wrapper.ge("t_article.created", articleSearch.getArticleCondition().getStartDate());
+        }
+        if (articleSearch.getArticleCondition().getEndDate() != null) {
+            wrapper.le("t_article.created", articleSearch.getArticleCondition().getEndDate());
+        }
 
         Page<ArticleVO> page = new Page<>(articleSearch.getPageParams().getPage(),
                 articleSearch.getPageParams().getRows());
-        IPage<ArticleVO> aPage = articleMapper.articleSearch(page, wrapper);
+        IPage<ArticleVO> aPage;
+        try {
+            aPage = articleMapper.articleSearch(page, wrapper);
+        } catch (Exception e) {
+            Result result = new Result();
+            result.setErrorMessage("搜索文章时发生错误: " + e.getMessage());
+            e.printStackTrace();
+            return result;
+        }
         
         // 获取当前用户ID
         Integer userId = getCurrentUserId();
@@ -340,8 +364,9 @@ public class ArticleServiceImpl implements ArticleService {
         
         Result result=new Result();
         articleSearch.getPageParams().setTotal(aPage.getTotal());
-        result.getMap().put("articleVOs", articleVOs);
-        result.getMap().put("pageParams",articleSearch.getPageParams());
+        result.getMap().put("articleVOs", articleVOs != null ? articleVOs : new ArrayList<>());
+        result.getMap().put("pageParams", articleSearch.getPageParams());
+        result.setMsg("搜索文章成功");
         return result;
     }
 
