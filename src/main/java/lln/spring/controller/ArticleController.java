@@ -18,19 +18,7 @@ import java.util.Map;
 @RequestMapping("/article")
 public class ArticleController {
 
-//    @PostMapping("/postHello")
-//    public String postHello() {
-//        return "Hello, " ;}
-//    @GetMapping("/getHello")
-//    public int[] hello1() {
-//        return new  int[]{10,20,30};
-//    }
-@GetMapping("/getHello")
-public String getHello() {
-    return "hello";
-}
-
-@Autowired
+    @Autowired
     private ArticleService articleService;
     
     @Autowired

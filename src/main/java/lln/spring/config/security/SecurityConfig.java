@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,22 +44,20 @@ public class SecurityConfig { //权限配置
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/images/**")).permitAll()
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/articleSearch")).permitAll()
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/getIndexData")).permitAll()
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/getPageOfArticle")).permitAll()
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/getPageOfArticleByArticleId")).permitAll()
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/getArticleById")).permitAll()
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/selectById")).permitAll()
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/getPageOfCommentByArticleId")).permitAll()
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/comment/insert")).permitAll() //任意访问
+                .requestMatchers(new AntPathRequestMatcher("/api/images/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/article/articleSearch")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/article/getIndexData")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/article/getAPageOfArticle")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/article/getArticleAndFirstPageCommentByArticleId")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/article/getArticleById")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/article/selectById")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/article/getAPageOfArticleVO")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/comment/insert")).permitAll() //任意访问
                 // 仅管理员可访问的接口
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/delete/getById")).hasRole("admin")
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/getPageOfArticleByU")).hasRole("admin")
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/publish")).authenticated()
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/article/publishArticle")).authenticated() // 认证用户可访问
-                // 仅普通会员可访问的接口
-                .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/blog/insert")).hasRole("common") //普通会员权限
+                .requestMatchers(new AntPathRequestMatcher("/article/deleteById")).hasRole("admin")
+                .requestMatchers(new AntPathRequestMatcher("/article/getUserArticles")).hasRole("admin")
+                .requestMatchers(new AntPathRequestMatcher("/article/publish")).authenticated()
+                .requestMatchers(new AntPathRequestMatcher("/article/publishArticle")).authenticated() // 认证用户可访问
                 // 其他请求需要认证
                 .anyRequest().authenticated()
         )

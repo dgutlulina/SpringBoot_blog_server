@@ -12,4 +12,10 @@ public class Tools {
         ZoneId zoneId= ZoneId.systemDefault();
         return instant.atZone(zoneId).toLocalDate();
     }
+    
+    // 添加缺失的getAPageOfArticleVO方法
+    public static Object getAPageOfArticleVO() {
+        // TODO: 实现该方法
+        return null;
+    }
 }

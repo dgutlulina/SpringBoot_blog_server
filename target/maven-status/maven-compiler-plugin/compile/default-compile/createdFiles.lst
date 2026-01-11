@@ -16,6 +16,7 @@ lln\spring\config\security\MyAuthenticationSuccessHandler.class
 lln\spring\controller\ArticleController.class
 lln\spring\mapper\StatisticMapper.class
 lln\spring\config\security\MyUserDetailsService.class
+lln\spring\mapper\CategoryMapper.class
 lln\spring\tools\ArticleSearch.class
 lln\spring\tools\ArticleCondition.class
 lln\spring\config\MybatisPlusConfig.class
@@ -23,10 +24,12 @@ lln\spring\tools\PageParams.class
 lln\spring\entity\vo\ArticleVO.class
 lln\spring\tools\Tools.class
 lln\spring\BlogServerApplication.class
+lln\spring\entity\Tag.class
+lln\spring\mapper\TagMapper.class
+lln\spring\entity\Category.class
 lln\spring\entity\dto\UserDTO.class
 lln\spring\service\ICommentService.class
 lln\spring\service\IUserService.class
-lln\spring\controller\ProfileController.class
 lln\spring\entity\vo\UserInfoVO.class
 lln\spring\entity\Statistic.class
 lln\spring\service\impl\UserServiceImpl.class

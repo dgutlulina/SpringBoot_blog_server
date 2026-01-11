@@ -569,48 +569,6 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Result getFavoriteArticlesByUserId(Integer userId, PageParams pageParams) {
-        Result result = new Result();
-        try {
-            // 获取用户收藏的文章ID列表
-            List<Integer> favoritePostIds = favoriteMapper.findFavoritePostIdsByUserId(userId);
-            
-            if (favoritePostIds == null || favoritePostIds.isEmpty()) {
-                // 没有收藏的文章
-                result.getMap().put("articleVOs", new ArrayList<>());
-                result.getMap().put("pageParams", pageParams);
-                return result;
-            }
-            
-            // 查询用户收藏的文章列表，带分页
-            Page<ArticleVO> page = new Page<>(pageParams.getPage(), pageParams.getRows());
-            QueryWrapper<ArticleVO> wrapper = new QueryWrapper<>();
-            wrapper.in("t_article.id", favoritePostIds);
-            wrapper.orderBy(true, false, "t_article.id");
-            wrapper.apply("t_article.id = t_statistic.article_id");
-            
-            IPage<ArticleVO> aPage = articleMapper.getAPageOfArticleVO(page, wrapper);
-            List<ArticleVO> articleVOs = aPage.getRecords();
-            
-            // 设置点赞和收藏状态
-            if (articleVOs != null && !articleVOs.isEmpty()) {
-                for (ArticleVO articleVO : articleVOs) {
-                    articleVO.setLiked(likeMapper.findByPostIdAndUserId(articleVO.getId(), userId) != null);
-                    articleVO.setFavorited(true); // 肯定是收藏的
-                }
-            }
-            
-            pageParams.setTotal(aPage.getTotal());
-            result.getMap().put("articleVOs", articleVOs);
-            result.getMap().put("pageParams", pageParams);
-        } catch (Exception e) {
-            result.setErrorMessage("获取收藏文章列表失败");
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    @Override
     public Result getUserArticles(Integer userId, PageParams pageParams) {
         Result result = new Result();
         try {

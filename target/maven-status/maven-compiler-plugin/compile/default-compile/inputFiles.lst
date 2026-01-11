@@ -2,6 +2,7 @@ D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\config\sec
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\Article.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\mapper\UserMapper.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\config\security\MyAuthenticationFailureHandler.java
+D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\Category.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\User.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\service\impl\ArticleServiceImpl.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\tools\Tools.java
@@ -9,7 +10,6 @@ D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\mapper\Art
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\service\impl\StatisticServiceImpl.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\tools\ArticleCondition.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\dto\UserUpdateDTO.java
-D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\controller\ProfileController.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\config\WebConfig.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\exception\GlobalExceptionHandler.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\mapper\FavoriteMapper.java
@@ -24,18 +24,21 @@ D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\mapper\Lik
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\Comment.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\vo\ArticleVO.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\config\MybatisPlusConfig.java
+D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\mapper\CategoryMapper.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\service\IStatisticService.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\controller\CommentController.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\dto\PasswordUpdateDTO.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\vo\UserInfoVO.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\service\impl\UserServiceImpl.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\dto\UserDTO.java
+D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\mapper\TagMapper.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\controller\ArticleController.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\service\ArticleService.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\mapper\CommentMapper.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\Statistic.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\tools\PageParams.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\service\IUserService.java
+D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\entity\Tag.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\mapper\StatisticMapper.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\service\ICommentService.java
 D:\A\myProject\myblog\SpringBoot_blog_server\src\main\java\lln\spring\BlogServerApplication.java

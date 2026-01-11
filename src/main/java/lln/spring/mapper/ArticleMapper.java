@@ -25,5 +25,12 @@ public interface ArticleMapper extends BaseMapper<Article> {
     IPage<Article> getAPageOfArticle(IPage<Article> page, @Param("ew") Wrapper wrapper);
     @Select("SELECT t_article.id,categories,title,t_article.created,t_statistic.hits,t_statistic.heart_count FROM t_article , t_statistic WHERE t_article.id = t_statistic.article_id ${ew.customSqlSegment}")
     IPage<ArticleVO> articleSearch(IPage<ArticleVO> page, @Param("ew") Wrapper wrapper);
-
+    
+    // 从XML映射文件中定义的方法
+    List<Article> selectArticlesByUserId(@Param("userId") Integer userId, @Param("offset") int offset, @Param("limit") int limit);
+    List<Article> selectArticlesLikedByUserId(@Param("userId") Integer userId, @Param("offset") int offset, @Param("limit") int limit);
+    List<Article> selectArticlesFavoritedByUserId(@Param("userId") Integer userId, @Param("offset") int offset, @Param("limit") int limit);
+    int countArticlesByUserId(@Param("userId") Integer userId);
+    int countArticlesLikedByUserId(@Param("userId") Integer userId);
+    int countArticlesFavoritedByUserId(@Param("userId") Integer userId);
 }

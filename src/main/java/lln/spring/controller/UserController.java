@@ -5,6 +5,8 @@ import lln.spring.entity.dto.PasswordUpdateDTO;
 import lln.spring.entity.dto.UserUpdateDTO;
 import lln.spring.entity.vo.UserInfoVO;
 import lln.spring.service.IUserService;
+import lln.spring.service.ArticleService;
+import lln.spring.tools.PageParams;
 import lln.spring.tools.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+    
+    @Autowired
+    private ArticleService articleService;
     
     @Value("${uploadAvatarsDir}")
     private String uploadAvatarsDir;
@@ -256,5 +261,62 @@ public class UserController {
             return Result.success("账户删除成功");
         }
         return Result.error("账户删除失败");
+    }
+    
+    /**
+     * 获取我的文章
+     */
+    @PostMapping("/articles")
+    public Result getMyArticles(@RequestBody PageParams pageParams) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+            return Result.error("用户未登录");
+        }
+        
+        String currentUsername = authentication.getName();
+        User currentUser = userService.getUserInfoByUsername(currentUsername);
+        if (currentUser == null) {
+            return Result.error("用户不存在");
+        }
+        
+        return articleService.getUserArticles(currentUser.getId(), pageParams);
+    }
+    
+    /**
+     * 获取我喜欢的文章
+     */
+    @PostMapping("/liked-articles")
+    public Result getLikedArticles(@RequestBody PageParams pageParams) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+            return Result.error("用户未登录");
+        }
+        
+        String currentUsername = authentication.getName();
+        User currentUser = userService.getUserInfoByUsername(currentUsername);
+        if (currentUser == null) {
+            return Result.error("用户不存在");
+        }
+        
+        return articleService.getUserLikedArticles(currentUser.getId(), pageParams);
+    }
+    
+    /**
+     * 获取我的收藏
+     */
+    @PostMapping("/favorited-articles")
+    public Result getFavoritedArticles(@RequestBody PageParams pageParams) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+            return Result.error("用户未登录");
+        }
+        
+        String currentUsername = authentication.getName();
+        User currentUser = userService.getUserInfoByUsername(currentUsername);
+        if (currentUser == null) {
+            return Result.error("用户不存在");
+        }
+        
+        return articleService.getUserFavoritedArticles(currentUser.getId(), pageParams);
     }
 }
