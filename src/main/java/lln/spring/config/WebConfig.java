@@ -18,17 +18,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${uploadImagesDir}")
     private String uploadImagesDir;
     
-    @Value("${uploadAvatarsDir}")
-    private String uploadAvatarsDir;
-    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 添加外部上传目录，同时添加项目内静态资源目录作为后备选项
         registry.addResourceHandler("/api/images/**")
                 .addResourceLocations("file:"+uploadImagesDir, "classpath:/static/images/");
         
-        registry.addResourceHandler("/api/images/avatars/**")
-                .addResourceLocations("file:"+uploadAvatarsDir);
+        // 添加对/images/**路径的映射，使其也能访问上传的图片文件
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:"+uploadImagesDir, "classpath:/static/images/");
     }
 
     @Override

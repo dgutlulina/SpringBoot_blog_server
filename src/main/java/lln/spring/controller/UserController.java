@@ -183,30 +183,17 @@ public class UserController {
         }
         
         try {
-            // 生成唯一文件名
-            String originalFilename = file.getOriginalFilename();
-            String extension = originalFilename != null ? originalFilename.substring(originalFilename.lastIndexOf(".")) : ".jpg";
-            String newFilename = UUID.randomUUID().toString() + extension;
-            
-            // 确定存储路径
-            File uploadPath = new File(uploadAvatarsDir);
-            if (!uploadPath.exists()) {
-                uploadPath.mkdirs();
-            }
-            
-            // 保存文件
-            String filePath = uploadAvatarsDir + newFilename;
-            file.transferTo(new File(filePath));
+            // 使用ArticleService的upload方法，这样头像和标题图片使用相同的保存逻辑
+            String url = articleService.upload(file);
             
             // 更新用户头像URL
-            String avatarUrl = "/api/images/avatars/" + newFilename;
-            boolean success = userService.updateAvatar(currentUser.getId(), avatarUrl);
+            boolean success = userService.updateAvatar(currentUser.getId(), url);
             if (success) {
-                return Result.success(avatarUrl, "头像上传成功");
+                return Result.success(url, "头像上传成功");
             } else {
                 return Result.error("头像更新失败");
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             return Result.error("文件上传失败: " + e.getMessage());
         }
     }
