@@ -572,17 +572,17 @@ public class ArticleServiceImpl implements ArticleService {
     public Result getFavoriteArticlesByUserId(Integer userId, PageParams pageParams) {
         Result result = new Result();
         try {
-            // 获取用户收藏的帖子ID列表
+            // 获取用户收藏的文章ID列表
             List<Integer> favoritePostIds = favoriteMapper.findFavoritePostIdsByUserId(userId);
             
             if (favoritePostIds == null || favoritePostIds.isEmpty()) {
-                // 没有收藏的帖子
+                // 没有收藏的文章
                 result.getMap().put("articleVOs", new ArrayList<>());
                 result.getMap().put("pageParams", pageParams);
                 return result;
             }
             
-            // 查询用户收藏的帖子列表，带分页
+            // 查询用户收藏的文章列表，带分页
             Page<ArticleVO> page = new Page<>(pageParams.getPage(), pageParams.getRows());
             QueryWrapper<ArticleVO> wrapper = new QueryWrapper<>();
             wrapper.in("t_article.id", favoritePostIds);
@@ -604,7 +604,7 @@ public class ArticleServiceImpl implements ArticleService {
             result.getMap().put("articleVOs", articleVOs);
             result.getMap().put("pageParams", pageParams);
         } catch (Exception e) {
-            result.setErrorMessage("获取收藏帖子列表失败");
+            result.setErrorMessage("获取收藏文章列表失败");
             e.printStackTrace();
         }
         return result;
@@ -676,17 +676,17 @@ public class ArticleServiceImpl implements ArticleService {
     public Result getUserLikedArticles(Integer userId, PageParams pageParams) {
         Result result = new Result();
         try {
-            // 获取用户点赞的帖子ID列表
+            // 获取用户点赞的文章ID列表
             List<Integer> likedPostIds = likeMapper.findLikedPostIdsByUserId(userId);
             
             if (likedPostIds == null || likedPostIds.isEmpty()) {
-                // 没有点赞的帖子
+                // 没有点赞的文章
                 result.getMap().put("articleVOs", new ArrayList<>());
                 result.getMap().put("pageParams", pageParams);
                 return result;
             }
             
-            // 查询用户点赞的帖子列表，带分页
+            // 查询用户点赞的文章列表，带分页
             Page<ArticleVO> page = new Page<>(pageParams.getPage(), pageParams.getRows());
             QueryWrapper<ArticleVO> wrapper = new QueryWrapper<>();
             wrapper.in("t_article.id", likedPostIds);
@@ -719,17 +719,17 @@ public class ArticleServiceImpl implements ArticleService {
     public Result getUserFavoritedArticles(Integer userId, PageParams pageParams) {
         Result result = new Result();
         try {
-            // 获取用户收藏的帖子ID列表
+            // 获取用户收藏的文章ID列表
             List<Integer> favoritePostIds = favoriteMapper.findFavoritePostIdsByUserId(userId);
             
             if (favoritePostIds == null || favoritePostIds.isEmpty()) {
-                // 没有收藏的帖子
+                // 没有收藏的文章
                 result.getMap().put("articleVOs", new ArrayList<>());
                 result.getMap().put("pageParams", pageParams);
                 return result;
             }
             
-            // 查询用户收藏的帖子列表，带分页
+            // 查询用户收藏的文章列表，带分页
             Page<ArticleVO> page = new Page<>(pageParams.getPage(), pageParams.getRows());
             QueryWrapper<ArticleVO> wrapper = new QueryWrapper<>();
             wrapper.in("t_article.id", favoritePostIds);

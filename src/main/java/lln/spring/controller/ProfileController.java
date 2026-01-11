@@ -262,7 +262,7 @@ public class ProfileController {
     }
     
     /**
-     * 获取我的帖子
+     * 获取我的文章
      */
     @PostMapping("/articles")
     public Result getMyArticles(@RequestBody PageParams pageParams) {
@@ -281,7 +281,7 @@ public class ProfileController {
     }
     
     /**
-     * 获取我喜欢的帖子
+     * 获取我喜欢的文章
      */
     @PostMapping("/liked-articles")
     public Result getLikedArticles(@RequestBody PageParams pageParams) {

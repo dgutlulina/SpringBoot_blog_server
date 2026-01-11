@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="lln.spring.mapper.ArticleMapper">
 
-    <!-- 获取指定用户的帖子列表 -->
+    <!-- 获取指定用户的文章列表 -->
     <select id="selectArticlesByUserId" resultType="lln.spring.entity.Article">
         SELECT * FROM t_article
         WHERE 1=1
@@ -13,7 +13,7 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <!-- 获取指定用户点赞的帖子列表 -->
+    <!-- 获取指定用户点赞的文章列表 -->
     <select id="selectArticlesLikedByUserId" resultType="lln.spring.entity.Article">
         SELECT a.* FROM t_article a
         INNER JOIN t_like l ON a.id = l.article_id
@@ -22,7 +22,7 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <!-- 获取指定用户收藏的帖子列表 -->
+    <!-- 获取指定用户收藏的文章列表 -->
     <select id="selectArticlesFavoritedByUserId" resultType="lln.spring.entity.Article">
         SELECT a.* FROM t_article a
         INNER JOIN t_favorite f ON a.id = f.article_id
@@ -31,7 +31,7 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <!-- 获取指定用户帖子总数 -->
+    <!-- 获取指定用户文章总数 -->
     <select id="countArticlesByUserId" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM t_article
         WHERE 1=1
@@ -40,13 +40,13 @@
         </if>
     </select>
 
-    <!-- 获取指定用户点赞的帖子总数 -->
+    <!-- 获取指定用户点赞的文章总数 -->
     <select id="countArticlesLikedByUserId" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM t_like
         WHERE user_id = #{userId}
     </select>
 
-    <!-- 获取指定用户收藏的帖子总数 -->
+    <!-- 获取指定用户收藏的文章总数 -->
     <select id="countArticlesFavoritedByUserId" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM t_favorite
         WHERE user_id = #{userId}

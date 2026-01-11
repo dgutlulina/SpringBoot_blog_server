@@ -270,11 +270,11 @@ public Result upload(MultipartFile file) {
         return result;
     }
     
-    // 用户帖子管理相关API
+    // 用户文章管理相关API
     
     @PostMapping("/getUserArticles")
     public Result getUserArticles(Integer userId, @RequestBody PageParams pageParams) {
-        // 检查权限，只允许用户查看自己的帖子或管理员查看所有用户帖子
+        // 检查权限，只允许用户查看自己的文章或管理员查看所有用户文章
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
             return Result.error("用户未登录");
@@ -289,14 +289,14 @@ public Result upload(MultipartFile file) {
         // 如果不是当前用户也不是管理员，则拒绝访问
         if (!currentUser.getId().equals(userId) && !authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_admin"))) {
-            return Result.error("权限不足，无法查看其他用户的帖子");
+            return Result.error("权限不足，无法查看其他用户的文章");
         }
         
         Result result = new Result();
         try {
             result = articleService.getUserArticles(userId, pageParams);
         } catch (Exception e) {
-            result.setErrorMessage("获取用户帖子失败！");
+            result.setErrorMessage("获取用户文章失败！");
             e.printStackTrace();
         }
         return result;
@@ -304,7 +304,7 @@ public Result upload(MultipartFile file) {
     
     @PostMapping("/getUserLikedArticles")
     public Result getUserLikedArticles(Integer userId, @RequestBody PageParams pageParams) {
-        // 检查权限，只允许用户查看自己的点赞帖子或管理员查看所有用户点赞
+        // 检查权限，只允许用户查看自己的点赞文章或管理员查看所有用户点赞
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
             return Result.error("用户未登录");
@@ -319,14 +319,14 @@ public Result upload(MultipartFile file) {
         // 如果不是当前用户也不是管理员，则拒绝访问
         if (!currentUser.getId().equals(userId) && !authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_admin"))) {
-            return Result.error("权限不足，无法查看其他用户的点赞帖子");
+            return Result.error("权限不足，无法查看其他用户的点赞文章");
         }
         
         Result result = new Result();
         try {
             result = articleService.getUserLikedArticles(userId, pageParams);
         } catch (Exception e) {
-            result.setErrorMessage("获取用户点赞帖子失败！");
+            result.setErrorMessage("获取用户点赞文章失败！");
             e.printStackTrace();
         }
         return result;
@@ -334,7 +334,7 @@ public Result upload(MultipartFile file) {
     
     @PostMapping("/getUserFavoritedArticles")
     public Result getUserFavoritedArticles(Integer userId, @RequestBody PageParams pageParams) {
-        // 检查权限，只允许用户查看自己的收藏帖子或管理员查看所有用户收藏
+        // 检查权限，只允许用户查看自己的收藏文章或管理员查看所有用户收藏
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
             return Result.error("用户未登录");
@@ -349,14 +349,14 @@ public Result upload(MultipartFile file) {
         // 如果不是当前用户也不是管理员，则拒绝访问
         if (!currentUser.getId().equals(userId) && !authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_admin"))) {
-            return Result.error("权限不足，无法查看其他用户的收藏帖子");
+            return Result.error("权限不足，无法查看其他用户的收藏文章");
         }
         
         Result result = new Result();
         try {
             result = articleService.getUserFavoritedArticles(userId, pageParams);
         } catch (Exception e) {
-            result.setErrorMessage("获取用户收藏帖子失败！");
+            result.setErrorMessage("获取用户收藏文章失败！");
             e.printStackTrace();
         }
         return result;

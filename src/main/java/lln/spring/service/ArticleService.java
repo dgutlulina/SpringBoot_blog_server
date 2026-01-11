@@ -96,10 +96,10 @@ public Article selectById(Integer id);
     public Result toggleFavorite(Integer articleId, Integer userId);
     
     /**
-     * 获取用户收藏的帖子列表
+     * 获取用户收藏的文章列表
      * @param userId 用户ID
      * @param pageParams 分页参数
-     * @return 收藏的帖子列表
+     * @return 收藏的文章列表
      */
     public Result getFavoriteArticlesByUserId(Integer userId, PageParams pageParams);
     
